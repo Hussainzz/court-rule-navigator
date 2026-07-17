@@ -6,7 +6,7 @@ You can ask a procedural question in normal language. The application searches t
 
 This is a learning and portfolio project. It is not a legal advice tool.
 
-## Demo
+## Demo ⛓️ 🔗 https://www.youtube.com/watch?v=KOJjT8eQRWg
 
 [![Watch the Court Rule Navigator demo](court-rule-navigator.png)](https://www.youtube.com/watch?v=KOJjT8eQRWg)
 
