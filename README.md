@@ -6,6 +6,12 @@ You can ask a procedural question in normal language. The application searches t
 
 This is a learning and portfolio project. It is not a legal advice tool.
 
+## Demo
+
+[![Watch the Court Rule Navigator demo](court-rule-navigator.png)](https://www.youtube.com/watch?v=KOJjT8eQRWg)
+
+Click the image to watch the demo on YouTube.
+
 ## Why I built it
 
 I wanted to understand how a RAG application works with a real legal document instead of starting with already-clean sample data.
