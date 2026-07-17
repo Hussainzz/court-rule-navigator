@@ -1,0 +1,448 @@
+{
+  "id": "7c4cad8a-745d-4904-bc68-f9c7547aa1fb",
+  "prevId": "2a6cc416-c667-4183-a251-cc27a4acce94",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.documents": {
+      "name": "documents",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "court_code": {
+          "name": "court_code",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "court_name": {
+          "name": "court_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "document_type": {
+          "name": "document_type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "version_label": {
+          "name": "version_label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "source_page_url": {
+          "name": "source_page_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "download_url": {
+          "name": "download_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "format": {
+          "name": "format",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "page_count": {
+          "name": "page_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "downloaded_at": {
+          "name": "downloaded_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ingested_at": {
+          "name": "ingested_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.pages": {
+      "name": "pages",
+      "schema": "",
+      "columns": {
+        "document_id": {
+          "name": "document_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "page_number": {
+          "name": "page_number",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "printed_page_label": {
+          "name": "printed_page_label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "raw_text": {
+          "name": "raw_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "pages_document_id_documents_id_fk": {
+          "name": "pages_document_id_documents_id_fk",
+          "tableFrom": "pages",
+          "tableTo": "documents",
+          "columnsFrom": [
+            "document_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "pages_document_id_page_number_pk": {
+          "name": "pages_document_id_page_number_pk",
+          "columns": [
+            "document_id",
+            "page_number"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.rule_chunks": {
+      "name": "rule_chunks",
+      "schema": "",
+      "columns": {
+        "document_id": {
+          "name": "document_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "rule_number": {
+          "name": "rule_number",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "chunk_index": {
+          "name": "chunk_index",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "subsection_label": {
+          "name": "subsection_label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "content": {
+          "name": "content",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "embedding": {
+          "name": "embedding",
+          "type": "vector(768)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "embedding_model": {
+          "name": "embedding_model",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "embedded_at": {
+          "name": "embedded_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "start_page_number": {
+          "name": "start_page_number",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "end_page_number": {
+          "name": "end_page_number",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "rule_chunks_rule_fk": {
+          "name": "rule_chunks_rule_fk",
+          "tableFrom": "rule_chunks",
+          "tableTo": "rules",
+          "columnsFrom": [
+            "document_id",
+            "rule_number"
+          ],
+          "columnsTo": [
+            "document_id",
+            "rule_number"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "rule_chunks_start_page_fk": {
+          "name": "rule_chunks_start_page_fk",
+          "tableFrom": "rule_chunks",
+          "tableTo": "pages",
+          "columnsFrom": [
+            "document_id",
+            "start_page_number"
+          ],
+          "columnsTo": [
+            "document_id",
+            "page_number"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "rule_chunks_end_page_fk": {
+          "name": "rule_chunks_end_page_fk",
+          "tableFrom": "rule_chunks",
+          "tableTo": "pages",
+          "columnsFrom": [
+            "document_id",
+            "end_page_number"
+          ],
+          "columnsTo": [
+            "document_id",
+            "page_number"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "rule_chunks_document_id_rule_number_chunk_index_pk": {
+          "name": "rule_chunks_document_id_rule_number_chunk_index_pk",
+          "columns": [
+            "document_id",
+            "rule_number",
+            "chunk_index"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "rule_chunks_index_check": {
+          "name": "rule_chunks_index_check",
+          "value": "\"rule_chunks\".\"chunk_index\" > 0"
+        },
+        "rule_chunks_page_range_check": {
+          "name": "rule_chunks_page_range_check",
+          "value": "\"rule_chunks\".\"start_page_number\" <= \"rule_chunks\".\"end_page_number\""
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.rules": {
+      "name": "rules",
+      "schema": "",
+      "columns": {
+        "document_id": {
+          "name": "document_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "rule_number": {
+          "name": "rule_number",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "section_number": {
+          "name": "section_number",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "section_title": {
+          "name": "section_title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "rule_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "moved_to": {
+          "name": "moved_to",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "content": {
+          "name": "content",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "start_page_number": {
+          "name": "start_page_number",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "end_page_number": {
+          "name": "end_page_number",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "rules_document_id_documents_id_fk": {
+          "name": "rules_document_id_documents_id_fk",
+          "tableFrom": "rules",
+          "tableTo": "documents",
+          "columnsFrom": [
+            "document_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "rules_start_page_fk": {
+          "name": "rules_start_page_fk",
+          "tableFrom": "rules",
+          "tableTo": "pages",
+          "columnsFrom": [
+            "document_id",
+            "start_page_number"
+          ],
+          "columnsTo": [
+            "document_id",
+            "page_number"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "rules_end_page_fk": {
+          "name": "rules_end_page_fk",
+          "tableFrom": "rules",
+          "tableTo": "pages",
+          "columnsFrom": [
+            "document_id",
+            "end_page_number"
+          ],
+          "columnsTo": [
+            "document_id",
+            "page_number"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "rules_document_id_rule_number_pk": {
+          "name": "rules_document_id_rule_number_pk",
+          "columns": [
+            "document_id",
+            "rule_number"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "rules_page_range_check": {
+          "name": "rules_page_range_check",
+          "value": "\"rules\".\"start_page_number\" <= \"rules\".\"end_page_number\""
+        }
+      },
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {
+    "public.rule_status": {
+      "name": "rule_status",
+      "schema": "public",
+      "values": [
+        "current",
+        "withdrawn",
+        "moved"
+      ]
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
